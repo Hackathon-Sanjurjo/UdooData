@@ -18,10 +18,9 @@ with open('.ipconfig') as f:
 publisher.bind(ipconfig)
 
 #Filter initialization
-x = [0,0,0,0,0,0]
-y = [0,0,0,0,0,0]
-z = [0,0,0,0,0,0]
-xyz = [x,y,z]
+N = 6
+xyz_angles = [[0]*N, [0]*N, [0]*N]
+xyz_accel = [[0]*N, [0]*N, [0]*N]
 
 ##############
 #Calculations
@@ -42,10 +41,15 @@ while True:
 	angles_array = magum.readGData('raw')
 	# Filter Data	
 	for i in range(3):
-                l = xyz[i]	
+                l = xyz_angles[i]	
 		l.append(anglesComp_array[i])
 		l.pop(0)
 		anglesComp_array[i]= sum(l)/len(l)
+	for i in range(3):
+		l = xyz_accel[i]
+                l.append(accel_array[i])
+                l.pop(0)
+                accel_array[i]= sum(l)/len(l)
 	# Send data
 	sensorObj = (time.time(),anglesComp_array, accel_array, 
 		angles_array)	
